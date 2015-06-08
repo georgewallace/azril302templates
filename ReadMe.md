@@ -1,9 +1,3 @@
-# Create Availability Set
+# Set of Templates for AZRIL302 Instructor Led Lab
 
-Create Availability Set  - a href=httpsportal.azure.com#createMicrosoft.Templateurihttps%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fazure-quickstart-templates%2Fmaster%2F101-create-availability-set-3FDs%2Fazuredeploy.json target=_blank
-    img src=httpazuredeploy.netdeploybutton.png
-a
-
-This template creates an Availability Set and configures it for 3 Fault Domains. This is just a snippet you may want to include in a more complex template 3 FDs are very useful when you're building a quorum-based solution or simply to ensure high availability of your service.
-
-
+The templates here are to be used to deploy Azure Resource leveraging Azure Resource Manager in the AZRIL302 Instructor Led Lab

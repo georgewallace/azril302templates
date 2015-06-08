@@ -276,8 +276,8 @@
             }
         },
         {
-            "name": "Test Application Insights",
-            "type": "Microsoft.Insights/components",
+           "name": "[concat(parameters('Test App Service PlanName'), '-', Application Insights)]", 
+  "type": "Microsoft.Insights/components",
             "location": "Central US",
             "apiVersion": "2014-04-01",
             "dependsOn": [

@@ -2,17 +2,13 @@
     "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "Test App Service PlanName": {
+        "Service Plan Name": {
             "type": "string"
         },
-        "Test App Service PlanLocation": {
-            "type": "string",
-                    "allowedValues": ["East US", "West US", "West Europe", "East Asia", "South East Asia"],
-        "metadata" : {
-          "description" : "Deployment location"
-        }
+        "Service Plan Location": {
+            "type": "string"
         },
-        "Test App Service PlanSKU": {
+        "Service Plan SKU": {
             "type": "string",
             "allowedValues": [
                 "Free",
@@ -22,7 +18,7 @@
             ],
             "defaultValue": "Free"
         },
-        "Test App Service PlanWorkerSize": {
+        "Service Plan Worker Size": {
             "type": "string",
             "allowedValues": [
                 "0",
@@ -31,7 +27,7 @@
             ],
             "defaultValue": "0"
         },
-        "Test Web AppName": {
+        "Web App Name": {
             "type": "string"
         }
     },
@@ -39,55 +35,55 @@
     },
     "resources": [
         {
-            "name": "[parameters('Test App Service PlanName')]",
+            "name": "[parameters('Service Plan Name')]",
             "type": "Microsoft.Web/serverfarms",
-            "location": "[parameters('Test App Service PlanLocation')]",
+            "location": "[parameters('Service Plan Location')]",
             "apiVersion": "2014-06-01",
             "dependsOn": [ ],
             "tags": {
                 "displayName": "Test App Service Plan"
             },
             "properties": {
-                "name": "[parameters('Test App Service PlanName')]",
-                "sku": "[parameters('Test App Service PlanSKU')]",
-                "workerSize": "[parameters('Test App Service PlanWorkerSize')]",
+                "name": "[parameters('Service Plan Name')]",
+                "sku": "[parameters('Service Plan SKU')]",
+                "workerSize": "[parameters('Service Plan Worker Size')]",
                 "numberOfWorkers": 1
             }
         },
         {
-            "name": "[parameters('Test Web AppName')]",
+            "name": "[parameters('Web App Name')]",
             "type": "Microsoft.Web/sites",
-            "location": "[parameters('Test App Service PlanLocation')]",
+            "location": "[parameters('Service Plan Location')]",
             "apiVersion": "2014-06-01",
             "dependsOn": [
-                "[concat('Microsoft.Web/serverfarms/', parameters('Test App Service PlanName'))]"
+                "[concat('Microsoft.Web/serverfarms/', parameters('Service Plan Name'))]"
             ],
             "tags": {
-                "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('Test App Service PlanName'))]": "Resource",
+                "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('Service Plan Name'))]": "Resource",
                 "displayName": "Test Web App"
             },
             "properties": {
-                "name": "[parameters('Test Web AppName')]",
-                "serverFarm": "[parameters('Test App Service PlanName')]"
+                "name": "[parameters('Web App Name')]",
+                "serverFarm": "[parameters('Service Plan Name')]"
             },
             "resources": [
                 
             ]
         },
         {
-            "name": "[concat(parameters('Test App Service PlanName'), '-', resourceGroup().name)]",
+            "name": "[concat(parameters('Service Plan Name'), '-', resourceGroup().name)]",
             "type": "Microsoft.Insights/autoscalesettings",
             "location": "East US",
             "apiVersion": "2014-04-01",
             "dependsOn": [
-                "[concat('Microsoft.Web/serverfarms/', parameters('Test App Service PlanName'))]"
+                "[concat('Microsoft.Web/serverfarms/', parameters('Service Plan Name'))]"
             ],
             "tags": {
-                "[concat('hidden-link:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('Test App Service PlanName'))]": "Resource",
-                "displayName": "Test Application Insights AutoScale"
+                "[concat('hidden-link:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('Service Plan Name'))]": "Resource",
+                "displayName": "Test App Application Insights AutoScale"
             },
             "properties": {
-                "name": "[concat(parameters('Test App Service PlanName'), '-', resourceGroup().name)]",
+                "name": "[concat(parameters('Service Plan Name'), '-', resourceGroup().name)]",
                 "profiles": [
                     {
                         "name": "Default",
@@ -100,7 +96,7 @@
                             {
                                 "metricTrigger": {
                                     "metricName": "CpuPercentage",
-                                    "metricResourceUri": "[concat(resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('Test App Service PlanName'))]",
+                                    "metricResourceUri": "[concat(resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('Service Plan Name'))]",
                                     "timeGrain": "PT1M",
                                     "statistic": "Average",
                                     "timeWindow": "PT10M",
@@ -118,7 +114,7 @@
                             {
                                 "metricTrigger": {
                                     "metricName": "CpuPercentage",
-                                    "metricResourceUri": "[concat(resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('Test App Service PlanName'))]",
+                                    "metricResourceUri": "[concat(resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('Service Plan Name'))]",
                                     "timeGrain": "PT1M",
                                     "statistic": "Average",
                                     "timeWindow": "PT1H",
@@ -137,30 +133,30 @@
                     }
                 ],
                 "enabled": false,
-                "targetResourceUri": "[concat(resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('Test App Service PlanName'))]"
+                "targetResourceUri": "[concat(resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('Service Plan Name'))]"
             }
         },
         {
-            "name": "[concat('CPUHigh ', parameters('Test App Service PlanName'))]",
+            "name": "[concat('CPUHigh ', parameters('Service Plan Name'))]",
             "type": "Microsoft.Insights/alertrules",
             "location": "East US",
             "apiVersion": "2014-04-01",
             "dependsOn": [
-                "[concat('Microsoft.Web/serverfarms/', parameters('Test App Service PlanName'))]"
+                "[concat('Microsoft.Web/serverfarms/', parameters('Service Plan Name'))]"
             ],
             "tags": {
-                "[concat('hidden-link:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('Test App Service PlanName'))]": "Resource",
-                "displayName": "CPUHigh Test Application Insights"
+                "[concat('hidden-link:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('Service Plan Name'))]": "Resource",
+                "displayName": "CPUHigh Test App Application Insights"
             },
             "properties": {
-                "name": "[concat('CPUHigh ', parameters('Test App Service PlanName'))]",
-                "description": "[concat('The average CPU is high across all the instances of ', parameters('Test App Service PlanName'))]",
+                "name": "[concat('CPUHigh ', parameters('Service Plan Name'))]",
+                "description": "[concat('The average CPU is high across all the instances of ', parameters('Service Plan Name'))]",
                 "isEnabled": false,
                 "condition": {
                     "odata.type": "Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition",
                     "dataSource": {
                         "odata.type": "Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource",
-                        "resourceUri": "[concat(resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('Test App Service PlanName'))]",
+                        "resourceUri": "[concat(resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('Service Plan Name'))]",
                         "metricName": "CpuPercentage"
                     },
                     "operator": "GreaterThan",
@@ -175,26 +171,26 @@
             }
         },
         {
-            "name": "[concat('LongHttpQueue ', parameters('Test App Service PlanName'))]",
+            "name": "[concat('LongHttpQueue ', parameters('Service Plan Name'))]",
             "type": "Microsoft.Insights/alertrules",
             "location": "East US",
             "apiVersion": "2014-04-01",
             "dependsOn": [
-                "[concat('Microsoft.Web/serverfarms/', parameters('Test App Service PlanName'))]"
+                "[concat('Microsoft.Web/serverfarms/', parameters('Service Plan Name'))]"
             ],
             "tags": {
-                "[concat('hidden-link:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('Test App Service PlanName'))]": "Resource",
-                "displayName": "LongHttpQueue Test Application Insights"
+                "[concat('hidden-link:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('Service Plan Name'))]": "Resource",
+                "displayName": "LongHttpQueue Test App Application Insights"
             },
             "properties": {
-                "name": "[concat('LongHttpQueue ', parameters('Test App Service PlanName'))]",
-                "description": "[concat('The HTTP queue for the instances of ', parameters('Test App Service PlanName'), ' has a large number of pending requests.')]",
+                "name": "[concat('LongHttpQueue ', parameters('Service Plan Name'))]",
+                "description": "[concat('The HTTP queue for the instances of ', parameters('Service Plan Name'), ' has a large number of pending requests.')]",
                 "isEnabled": false,
                 "condition": {
                     "odata.type": "Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition",
                     "dataSource": {
                         "odata.type": "Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource",
-                        "resourceUri": "[concat(resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('Test App Service PlanName'))]",
+                        "resourceUri": "[concat(resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('Service Plan Name'))]",
                         "metricName": "HttpQueueLength"
                     },
                     "operator": "GreaterThan",
@@ -209,26 +205,26 @@
             }
         },
         {
-            "name": "[concat('ServerErrors ', 'Test Application Insights')]",
+            "name": "[concat('ServerErrors ', 'Test App Application Insights')]",
             "type": "Microsoft.Insights/alertrules",
             "location": "East US",
             "apiVersion": "2014-04-01",
             "dependsOn": [
-                "[concat('Microsoft.Web/sites/', parameters('Test Web AppName'))]"
+                "[concat('Microsoft.Web/sites/', parameters('Web App Name'))]"
             ],
             "tags": {
-                "[concat('hidden-link:', resourceGroup().id, '/providers/Microsoft.Web/sites/', parameters('Test Web AppName'))]": "Resource",
-                "displayName": "ServerErrors Test Application Insights"
+                "[concat('hidden-link:', resourceGroup().id, '/providers/Microsoft.Web/sites/', parameters('Web App Name'))]": "Resource",
+                "displayName": "ServerErrors Test App Application Insights"
             },
             "properties": {
-                "name": "[concat('ServerErrors ', parameters('Test Web AppName'))]",
-                "description": "[concat(parameters('Test Web AppName'), ' has some server errors, status code 5xx.')]",
+                "name": "[concat('ServerErrors ', parameters('Web App Name'))]",
+                "description": "[concat(parameters('Web App Name'), ' has some server errors, status code 5xx.')]",
                 "isEnabled": false,
                 "condition": {
                     "odata.type": "Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition",
                     "dataSource": {
                         "odata.type": "Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource",
-                        "resourceUri": "[concat(resourceGroup().id, '/providers/Microsoft.Web/sites/', parameters('Test Web AppName'))]",
+                        "resourceUri": "[concat(resourceGroup().id, '/providers/Microsoft.Web/sites/', parameters('Web App Name'))]",
                         "metricName": "Http5xx"
                     },
                     "operator": "GreaterThan",
@@ -243,25 +239,25 @@
             }
         },
         {
-            "name": "[concat('ForbiddenRequests ', 'Test Application Insights')]",
+            "name": "[concat('ForbiddenRequests ', 'Test App Application Insights')]",
             "type": "Microsoft.Insights/alertrules",
             "location": "East US",
             "apiVersion": "2014-04-01",
             "dependsOn": [
-                "[concat('Microsoft.Web/sites/', parameters('Test Web AppName'))]"
+                "[concat('Microsoft.Web/sites/', parameters('Web App Name'))]"
             ],
             "tags": {
-                "displayName": "ForbiddenRequests Test Application Insights"
+                "displayName": "ForbiddenRequests Test App Application Insights"
             },
             "properties": {
-                "name": "[concat('ForbiddenRequests ', parameters('Test Web AppName'))]",
-                "description": "[concat(parameters('Test Web AppName'), ' has some requests that are forbidden, status code 403.')]",
+                "name": "[concat('ForbiddenRequests ', parameters('Web App Name'))]",
+                "description": "[concat(parameters('Web App Name'), ' has some requests that are forbidden, status code 403.')]",
                 "isEnabled": false,
                 "condition": {
                     "odata.type": "Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition",
                     "dataSource": {
                         "odata.type": "Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource",
-                        "resourceUri": "[concat(resourceGroup().id, '/providers/Microsoft.Web/sites/', parameters('Test Web AppName'))]",
+                        "resourceUri": "[concat(resourceGroup().id, '/providers/Microsoft.Web/sites/', parameters('Web App Name'))]",
                         "metricName": "Http403"
                     },
                     "operator": "GreaterThan",
@@ -276,18 +272,18 @@
             }
         },
         {
-           "name": "[concat(parameters('Test App Service PlanName'), '-', Application Insights)]", 
-  "type": "Microsoft.Insights/components",
+                 "name": "[concat(parameters('Service Plan Name'), ' Application Insights']",
+            "type": "Microsoft.Insights/components",
             "location": "Central US",
             "apiVersion": "2014-04-01",
             "dependsOn": [
-                "[concat('Microsoft.Web/sites/', parameters('Test Web AppName'))]"
+                "[concat('Microsoft.Web/sites/', parameters('Web App Name'))]"
             ],
             "tags": {
-                "displayName": "Component Test Application Insights"
+                "displayName": "Component Application Insights"
             },
             "properties": {
-                "applicationId": "[parameters('Test Web AppName')]"
+                "applicationId": "[parameters('Web App Name')]"
             }
         }
     ],

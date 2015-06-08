@@ -1,10 +1,10 @@
-# Very simple deployment of an Windows VM with a single empty Data Disk 
+# Very simple deployment of a Empty Website to Azure 
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https://raw.githubusercontent.com/georgewallace/azril302templates/master/AzureWebsite/azuredeploy.json" target="_blank">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fgeorgewallace%2Fazril302templates%2Fmaster%2FAzureWebsite%2Fazuredeploy.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 
-Built by: [kenazk](https://github.com/kenazk)
+Built by: [georgewallace](https://github.com/georgewallace)
 
 This template allows you to deploy a simple Windows VM using a few different options for the Windows version, using the latest patched version. This will deploy in West US on a D1 VM Size and attach an empty data disk to it. 
 

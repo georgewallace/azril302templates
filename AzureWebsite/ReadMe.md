@@ -12,9 +12,9 @@ Below are the parameters that the template expects:
 
 | Name   | Description    |
 |:--- |:---|
-| Test App Service PlanName  | Name for the App Service Plan to be used. |
-| Test App Service PlanLocation  | Location to deploy the website to. Allowed values: ["East US", "West US", "West Europe", "East Asia", "South East Asia"]  |
-| Test App Service PlanSKU  | The type of Service Plan. Allowed values: ["Free", "Shared", "Basic", "Standard"  |
-| Test App Service PlanWorkerSize  | Number of scaled sites. Allowed values: ["0","1","2"] |
-| Test Web AppName  | The Name of the Website |
-| sizeOfDiskInGB | The size of disk in GB | 
+| Service Plan Name  | Name for the App Service Plan to be used. |
+| Service Plan Location  | Location to deploy the website to. Allowed values: ["East US", "West US", "West Europe", "East Asia", "South East Asia"]  |
+| Service Plan SKU  | The type of Service Plan. Allowed values: ["Free", "Shared", "Basic", "Standard"  |
+| Service Plan Worker Size  | Number of scaled sites. Allowed values: ["0","1","2"] |
+| Web App Name  | The Name of the Website |
+

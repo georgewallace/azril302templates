@@ -6,7 +6,12 @@
             "type": "string"
         },
         "Service Plan Location": {
-            "type": "string"
+            "type": "string",
+                   "allowedValues": ["East US", "West US", "West Europe", "East Asia", "South East Asia"], 
+           "metadata" : { 
+             "description" : "Location of deployment" 
+          } 
+
         },
         "Service Plan SKU": {
             "type": "string",
@@ -272,7 +277,7 @@
             }
         },
         {
-                 "name": "[concat(parameters('Service Plan Name'), ' Application Insights']",
+                 "name": "[concat(parameters('Service Plan Name'), ' Application Insights')]",
             "type": "Microsoft.Insights/components",
             "location": "Central US",
             "apiVersion": "2014-04-01",

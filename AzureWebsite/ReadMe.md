@@ -6,15 +6,15 @@
 
 Built by: [georgewallace](https://github.com/georgewallace)
 
-This template allows you to deploy a simple Windows VM using a few different options for the Windows version, using the latest patched version. This will deploy in West US on a D1 VM Size and attach an empty data disk to it. 
+This template allows you to deploy a simple Website to Azure with App Inishgts configured as well. 
 
 Below are the parameters that the template expects: 
 
 | Name   | Description    |
 |:--- |:---|
-| newStorageAccountName  | Unique DNS Name for the Storage Account where the Virtual Machine's disks will be placed. |
-| adminUsername  | Username for the Virtual Machine  |
-| adminPassword  | Password for the Virtual Machine  |
-| dnsNameForPublicIP  | Unique DNS Name for the Public IP used to access the Virtual Machine. |
-| windowsOSVersion  | The Windows version for the VM. This will pick a fully patched image of this given Windows version. Allowed values: 2008-R2-SP1, 2012-Datacenter, 2012-R2-Datacenter, Windows-Server-Technical-Preview |
+| Test App Service PlanName  | Name for the App Service Plan to be used. |
+| Test App Service PlanLocation  | Location to deploy the website to. Allowed values: ["East US", "West US", "West Europe", "East Asia", "South East Asia"]  |
+| Test App Service PlanSKU  | The type of Service Plan. Allowed values: ["Free", "Shared", "Basic", "Standard"  |
+| Test App Service PlanWorkerSize  | Number of scaled sites. Allowed values: ["0","1","2"] |
+| Test Web AppName  | The Name of the Website |
 | sizeOfDiskInGB | The size of disk in GB | 

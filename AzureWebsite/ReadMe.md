@@ -14,7 +14,7 @@ Below are the parameters that the template expects:
 |:--- |:---|
 | Service Plan Name  | Name for the App Service Plan to be used. |
 | Service Plan Location  | Location to deploy the website to. Allowed values: ["East US", "West US", "West Europe", "East Asia", "South East Asia"]  |
-| Service Plan SKU  | The type of Service Plan. Allowed values: ["Free", "Shared", "Basic", "Standard"  |
+| Service Plan SKU  | The type of Service Plan. Allowed values: ["Free", "Shared", "Basic", "Standard"]  |
 | Service Plan Worker Size  | Number of scaled sites. Allowed values: ["0","1","2"] |
 | Web App Name  | The Name of the Website |
 

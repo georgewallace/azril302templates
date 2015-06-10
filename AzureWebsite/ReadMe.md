@@ -6,7 +6,7 @@
 
 Built by: [georgewallace](https://github.com/georgewallace)
 
-This template allows you to deploy a simple Website to Azure with App Inishgts configured as well. 
+This template allows you to deploy a simple Website to Azure with App Insights configured as well. 
 
 Below are the parameters that the template expects: 
 

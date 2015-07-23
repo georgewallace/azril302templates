@@ -1,0 +1,9 @@
+
+{
+  "itemDisplayName": "Deploy a DC and vms to Azure",
+  "description": "This template allows you to deploy a DC and vms to azure",
+  "summary": "This template allows you to deploy a DC and vms to azure.",
+  "githubUsername": "georgewallace",
+  "dateUpdated": "2015-23-07"
+}
+

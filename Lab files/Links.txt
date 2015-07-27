@@ -1,0 +1,14 @@
+Best Practices
+https://azure.microsoft.com/en-us/documentation/articles/best-practices-resource-manager-design-templates/
+
+ARM cmdlets for DSC
+http://blogs.msdn.com/b/powershell/archive/2015/07/20/introducing-azure-resource-manager-cmdlets-for-azure-powershell-dsc-extension.aspx
+
+ARM Templates (GitHub)
+https://github.com/Azure/azure-quickstart-templates
+
+Using Certs for Auth with ARM
+http://hindenes.com/trondsworking/2015/07/19/certificate-based-authentication-to-azure-resource-manager-using-powershell/
+
+Available Templates
+https://azure.microsoft.com/en-us/documentation/templates/

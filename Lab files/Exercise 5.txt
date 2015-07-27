@@ -1,0 +1,23 @@
+###############################################################################
+Exercise 5 Task 2 - Step 1 
+###############################################################################
+
+$providers.value | Select-Object –Property Namespace, registrationstate | Out-GridView
+
+###############################################################################
+Exercise 5 Task 2 - Step 4 
+###############################################################################
+
+$providers.value.ResourceTypes | Out-GridView
+
+###############################################################################
+Exercise 5 Task 2 - Step 7 
+###############################################################################
+
+Invoke-RestMethod -uri "https://management.azure.com/subscriptions/$subscriptionid/providers/Microsoft.Storage/register?api-version=2015-01-01" -method post -Headers $global:requestheader 
+
+###############################################################################
+Exercise 5 Task 2 - Step 9 
+###############################################################################
+
+Invoke-RestMethod -uri "https://management.azure.com/subscriptions/$subscriptionid/providers/Microsoft.Storage/unregister?api-version=2015-01-01" -method post -Headers $global:requestheader 

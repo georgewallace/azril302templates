@@ -1,0 +1,456 @@
+﻿###############################################################################
+Exercise 2 Task 3 - Step 4 
+###############################################################################
+
+,
+        "numberOfVMs": {
+            "type": "int"
+        }
+		
+###############################################################################
+Exercise 2 Task 3 - Step 7 
+###############################################################################
+
+,
+        "numberOfInstances": "[parameters('numberOfVMs')]"
+
+###############################################################################
+Exercise 2 Task 3 - Step 11 
+###############################################################################
+
+            	"name": "[concat('nic', copyindex())]",
+            	"copy": {
+                "name": "nicLoop",
+                "count": "[variables('numberOfInstances')]"
+            },
+
+###############################################################################
+Exercise 2 Task 4 - Step 4 
+###############################################################################
+
+"name": "[concat('publicIP', copyIndex())]",
+            	"copy": {
+                	"name": "pubipLoop",
+                	"count": "[variables('numberOfInstances')]"
+            		},
+
+###############################################################################
+Exercise 2 Task 4 - Step 7 
+###############################################################################
+
+	"domainNameLabel": "[concat(parameters('publicipDnsName'),copyIndex())]"
+
+###############################################################################
+Exercise 2 Task 4 - Step 8 
+###############################################################################
+
+{
+      "name": "[concat('publicIP', copyIndex())]",
+      "copy": {
+        "name": "pubipLoop",
+        "count": "[variables('numberOfInstances')]"
+      },
+
+      "type": "Microsoft.Network/publicIPAddresses",
+      "location": "[parameters('<yourinitials>networkLocation')]",
+      "apiVersion": "2015-05-01-preview",
+      "dependsOn": [ ],
+      "tags": {
+        "displayName": "publicip"
+      },
+      "properties": {
+        "publicIPAllocationMethod": "Dynamic",
+        "dnsSettings": {
+          "domainNameLabel": "[concat(parameters('publicipDnsName'),copyIndex())]"
+        }
+      }
+}
+
+###############################################################################
+Exercise 2 Task 4 - Step 10 
+###############################################################################
+
+"publicIPAddress": {
+   "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(‘publicIP’, copyIndex())]"                            
+					}
+					
+###############################################################################
+Exercise 2 Task 4 - Step 12 
+###############################################################################
+
+      "dependsOn": [
+        "[concat('Microsoft.Network/virtualNetworks/', '<yourinitials>network')]",
+        "[concat('Microsoft.Network/publicIPAddresses/', 'publicIP', copyIndex())]"
+      ],
+	  
+###############################################################################
+Exercise 2 Task 4 - Step 13 
+###############################################################################
+
+{
+      "name": "[parameters('nicName')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "location": "[parameters('<yourinitials>networkLocation')]",
+      "apiVersion": "2015-05-01-preview",
+      "dependsOn": [
+        "[concat('Microsoft.Network/virtualNetworks/', '<yourinitials>network')]",
+        "[concat('Microsoft.Network/publicIPAddresses/', 'publicIP', copyIndex())]"
+      ],
+      "tags": {
+        "displayName": "nic"
+      },
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "subnet": {
+                "id": "[variables('nicSubnetRef')]"
+              },
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses',concat('publicIP', copyIndex()))]"
+              }
+            }
+          }
+        ]
+      }
+    }
+	
+###############################################################################
+Exercise 2 Task 5 - Step 6 
+###############################################################################
+
+	"location": "[parameters(<yourinitials>networkLocation)]", 
+	
+###############################################################################
+Exercise 2 Task 6 - Step 5 
+###############################################################################
+
+"name": "[concat(parameters('vmName'), copyindex())]",
+            "copy": {
+                "name": "virtualMachineLoop",
+                "count": "[variables('numberOfInstances')]"
+            },
+			
+###############################################################################
+Exercise 2 Task 6 - Step 8 
+###############################################################################
+
+            "dependsOn": [
+                "[concat('Microsoft.Storage/storageAccounts/', parameters(‘<yourinitials>azril302storageaccountName’))]",
+                "[concat('Microsoft.Network/networkInterfaces/', 'nic', copyindex())]"
+            ],
+
+###############################################################################
+Exercise 2 Task 6 - Step 10 
+###############################################################################
+
+"networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces',concat('nic', copyindex()))]"
+                        }
+                    ]
+                }
+
+###############################################################################
+Exercise 2 Task 6 - Step 12 
+###############################################################################
+
+                    "osDisk": {
+                        "name": "vmOSDisk",
+                        "vhd": {
+                            "uri": "[concat('http://', parameters('<yourinitials>azril302storageaccountName'), '.blob.core.windows.net/', variables('vmStorageAccountContainerName'), '/', variables('vmOSDiskName'), copyindex(), '.vhd')]"
+                        },
+                        "caching": "ReadWrite",
+                        "createOption": "FromImage"
+                    }
+					
+###############################################################################
+Exercise 2 Task 6 - Step 13 
+###############################################################################
+
+{
+            "name": "[concat(parameters('vmName'), copyindex())]",
+            "copy": {
+                "name": "virtualMachineLoop",
+                "count": "[variables('numberOfInstances')]"
+                   
+            },
+            "type": "Microsoft.Compute/virtualMachines",
+            "location": "[parameters('<yourinitials>networkLocation')]",
+            "apiVersion": "2015-05-01-preview",
+            "dependsOn": [
+                "[concat('Microsoft.Storage/storageAccounts/', parameters('<yourinitials>azril302storageaccountName'))]",
+                "[concat('Microsoft.Network/networkInterfaces/', concat(‘nic’,copyindex())]"
+            ],
+            "tags": {
+                "displayName": "vm"
+            },
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[variables('vmVmSize')]"
+                },
+                "osProfile": {
+                    "computername": "[parameters('vmName')]",
+                    "adminUsername": "[parameters('vmAdminUsername')]",
+                    "adminPassword": "[parameters('vmAdminPassword')]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "[variables('vmImagePublisher')]",
+                        "offer": "[variables('vmImageOffer')]",
+                        "sku": "[parameters('vmWindowsOSVersion')]",
+                        "version": "latest"
+                    }
+,
+                    "osDisk": {
+                        "name": "vmOSDisk",
+                        "vhd": {
+                            "uri": "[concat('http://', parameters('<yourinitials>azril302storageaccountName'), '.blob.core.windows.net/', variables('vmStorageAccountContainerName'), '/', variables('vmOSDiskName'), '.vhd')]"
+                        },
+                        "caching": "ReadWrite",
+                        "createOption": "FromImage"
+                    }
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces',concat(‘nic’,copyindex()))]"
+                        }
+                    ]
+                }
+            }
+        }
+
+###############################################################################		
+Exercise 2 - Complete 
+###############################################################################
+
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "<yourinitials>networkLocation": {
+            "type": "string",
+            "defaultValue": "West US",
+            "allowedValues": [
+                "East US",
+                "West US",
+                "West Europe",
+                "East Asia",
+                "South East Asia"
+            ]
+        },
+        "nicName": {
+            "type": "string"
+        },
+        "numberOfVMs": { "type": "int" },
+        "publicipDnsName": {
+            "type": "string"
+        },
+        "<yourinitials>azril302storageaccountName": {
+            "type": "string"
+        },
+        "<yourinitials>azril302storageaccountType": {
+            "type": "string",
+            "defaultValue": "Standard_LRS",
+            "allowedValues": [
+                "Standard_LRS",
+                "Standard_GRS",
+                "Standard_ZRS"
+            ]
+        },
+        "vmName": {
+            "type": "string"
+        },
+        "vmAdminUserName": {
+            "type": "string"
+        },
+        "vmAdminPassword": {
+            "type": "securestring"
+        },
+        "vmWindowsOSVersion": {
+            "type": "string",
+            "defaultValue": "2012-R2-Datacenter",
+            "allowedValues": [
+                "2008-R2-SP1",
+                "2012-Datacenter",
+                "2012-R2-Datacenter",
+                "Windows-Server-Technical-Preview"
+            ]
+        }
+
+    },
+    "variables": {
+        "<yourinitials>networkPrefix": "10.0.0.0/16",
+        "<yourinitials>networkSubnet1Name": "Subnet-1",
+        "<yourinitials>networkSubnet1Prefix": "10.0.0.0/24",
+        "<yourinitials>networkSubnet2Name": "Subnet-2",
+        "<yourinitials>networkSubnet2Prefix": "10.0.1.0/24",
+        "nicVnetID": "[resourceId('Microsoft.Network/virtualNetworks', '<yourinitials>network')]",
+        "nicSubnetRef": "[concat(variables('nicVnetID'),'/subnets/', variables('<yourinitials>networkSubnet1Name'))]",
+        "numberOfInstances": "[parameters('numberOfVMs')]",
+        "vmImagePublisher": "MicrosoftWindowsServer",
+        "vmImageOffer": "WindowsServer",
+        "vmOSDiskName": "vmOSDisk",
+        "vmVmSize": "Standard_D1",
+        "vmVnetID": "[resourceId('Microsoft.Network/virtualNetworks', '<yourinitials>network')]",
+        "vmSubnetRef": "[concat(variables('vmVnetID'), '/subnets/', variables('<yourinitials>networkSubnet1Name'))]",
+        "vmStorageAccountContainerName": "vhds"
+    },
+    "resources": [
+        {
+            "name": "<yourinitials>network",
+            "type": "Microsoft.Network/virtualNetworks",
+            "location": "[parameters('<yourinitials>networkLocation')]",
+            "apiVersion": "2015-05-01-preview",
+            "dependsOn": [ ],
+            "tags": {
+                "displayName": "<yourinitials>network"
+            },
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[variables('<yourinitials>networkPrefix')]"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "[variables('<yourinitials>networkSubnet1Name')]",
+                        "properties": {
+                            "addressPrefix": "[variables('<yourinitials>networkSubnet1Prefix')]"
+                        }
+                    },
+                    {
+                        "name": "[variables('<yourinitials>networkSubnet2Name')]",
+                        "properties": {
+                            "addressPrefix": "[variables('<yourinitials>networkSubnet2Prefix')]"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "[concat('nic', copyindex())]",
+            "copy": {
+                "name": "nicLoop",
+                "count": "[variables('numberOfInstances')]"
+            },
+            "type": "Microsoft.Network/networkInterfaces",
+            "location": "[parameters('<yourinitials>networkLocation')]",
+            "apiVersion": "2015-05-01-preview",
+            "dependsOn": [
+                "[concat('Microsoft.Network/virtualNetworks/', '<yourinitials>network')]",
+                "[concat('Microsoft.Network/publicIPAddresses/','publicIP', copyIndex())]"
+            ],
+            "tags": {
+                "displayName": "nic"
+            },
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "subnet": {
+                                "id": "[variables('nicSubnetRef')]"
+                            },
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat('publicIP', copyIndex()))]"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "[concat('publicIP', copyIndex())]",
+            "copy": {
+                "name": "pubipLoop",
+                "count": "[variables('numberOfInstances')]"
+            },
+            "type": "Microsoft.Network/publicIPAddresses",
+            "location": "[parameters('<yourinitials>networkLocation')]",
+            "apiVersion": "2015-05-01-preview",
+            "dependsOn": [ ],
+            "tags": {
+                "displayName": "publicip"
+            },
+            "properties": {
+                "publicIPAllocationMethod": "Dynamic",
+                "dnsSettings": {
+                    "domainNameLabel": "[concat(parameters('publicipDnsName'), copyIndex())]"
+                }
+            }
+        },
+        {
+            "name": "[parameters('<yourinitials>azril302storageaccountName')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "location": "[parameters('<yourinitials>networkLocation')]",
+            "apiVersion": "2015-05-01-preview",
+            "dependsOn": [ ],
+            "tags": {
+                "displayName": "<yourinitials>azril302storageaccount"
+            },
+            "properties": {
+                "accountType": "[parameters('<yourinitials>azril302storageaccountType')]"
+            }
+        },
+        {
+            "name": "[concat(parameters('vmName'),copyIndex())]",
+            "copy": {
+                "name": "virtualMachineLoop",
+                "count":  "[variables('numberOfInstances')]"
+            },
+            "type": "Microsoft.Compute/virtualMachines",
+            "location": "[parameters('<yourinitials>networkLocation')]",
+            "apiVersion": "2015-05-01-preview",
+            "dependsOn": [
+                "[concat('Microsoft.Storage/storageAccounts/', parameters('<yourinitials>azril302storageaccountName'))]",
+                "[concat('Microsoft.Network/networkInterfaces/','nic', copyIndex())]"
+            ],
+            "tags": {
+                "displayName": "vm"
+            },
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[variables('vmVmSize')]"
+                },
+                "osProfile": {
+                    "computername": "[parameters('vmName')]",
+                    "adminUsername": "[parameters('vmAdminUsername')]",
+                    "adminPassword": "[parameters('vmAdminPassword')]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "[variables('vmImagePublisher')]",
+                        "offer": "[variables('vmImageOffer')]",
+                        "sku": "[parameters('vmWindowsOSVersion')]",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "name": "vmOSDisk",
+                        "vhd": {
+                            "uri": "[concat('http://', parameters('<yourinitials>azril302storageaccountName'), '.blob.core.windows.net/', variables('vmStorageAccountContainerName'), '/', variables('vmOSDiskName'), copyindex(), '.vhd')]"
+                        },
+                        "caching": "ReadWrite",
+                        "createOption": "FromImage"
+                    }
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat('nic',copyIndex()))]"
+                        }
+                    ]
+                }
+            }
+        }
+
+    ],
+    "outputs": {
+    }
+}
+

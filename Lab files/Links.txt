@@ -12,3 +12,12 @@ http://hindenes.com/trondsworking/2015/07/19/certificate-based-authentication-to
 
 Available Templates
 https://azure.microsoft.com/en-us/documentation/templates/
+
+Azure Resource Manager REST API Reference
+https://msdn.microsoft.com/en-us/library/azure/dn790568.aspx
+
+Azure Resource Manager Schemas
+https://github.com/Azure/azure-resource-manager-schemas
+
+Azure Resource Manager Template Functions
+https://azure.microsoft.com/en-us/documentation/articles/resource-group-template-functions/
